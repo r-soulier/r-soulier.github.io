@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Piano Song Recommender</title>
+</head>
+<body style="background-color: #111; color: #eee; font-family: Arial, sans-serif; text-align: center; padding: 40px;">
+
+  <h1 style="color: white; font-size: 36px;">🎹 Piano Song Recommender</h1>
+  <p style="color: #ccc; font-size: 16px;">Pick your skill level, song type, and length to get a recommendation.</p>
+
+  <form id="songForm" style="margin-top: 30px;">
+    <div style="margin: 20px 0;">
+      <label for="difficulty" style="font-size: 18px;">🎯 Difficulty:</label><br>
+      <select id="difficulty" style="padding: 10px; font-size: 16px; background-color: #222; color: #fff; border: none; border-radius: 6px;">
+        <option value="Beginner">Beginner</option>
+        <option value="Intermediate">Intermediate</option>
+        <option value="Advanced">Advanced</option>
+      </select>
+    </div>
+
+    <div style="margin: 20px 0;">
+      <label for="type" style="font-size: 18px;">🎶 Song Type:</label><br>
+      <select id="type" style="padding: 10px; font-size: 16px; background-color: #222; color: #fff; border: none; border-radius: 6px;">
+        <option value="Classical">Classical</option>
+        <option value="Pop">Pop</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Video Game">Video Game</option>
+        <option value="Movie Soundtrack">Movie Soundtrack</option>
+      </select>
+    </div>
+
+    <div style="margin: 20px 0;">
+      <label for="length" style="font-size: 18px;">⏱️ Length:</label><br>
+      <select id="length" style="padding: 10px; font-size: 16px; background-color: #222; color: #fff; border: none; border-radius: 6px;">
+        <option value="Short">Short</option>
+        <option value="Medium">Medium</option>
+        <option value="Long">Long</option>
+      </select>
+    </div>
+
+    <button type="button" onclick="recommendSong()" 
+      style="margin-top: 20px; padding: 12px 24px; font-size: 16px; background-color: #555; color: white; border: none; border-radius: 8px; cursor: pointer;">
+      🎼 Get Recommendation
+    </button>
+  </form>
+
+  <h2 style="margin-top: 40px; font-size: 24px; color: white;">🎵 Recommended Song:</h2>
+  <p id="recommendation" style="font-size: 20px; color: #ccc; margin-top: 10px;"></p>
+
+  <script>
+    const songDatabase = [
+      // Beginner
+      { title: "Minuet in G - Bach", difficulty: "Beginner", type: "Classical", length: "Short" },
+      { title: "Ode to Joy - Beethoven", difficulty: "Beginner", type: "Classical", length: "Medium" },
+      { title: "Canon in D (Simple) - Pachelbel", difficulty: "Beginner", type: "Classical", length: "Long" },
+      { title: "Let It Be - The Beatles", difficulty: "Beginner", type: "Pop", length: "Short" },
+      { title: "Someone Like You (Easy) - Adele", difficulty: "Beginner", type: "Pop", length: "Medium" },
+      { title: "Bohemian Rhapsody (Easy) - Queen", difficulty: "Beginner", type: "Pop", length: "Long" },
+      { title: "C Jam Blues", difficulty: "Beginner", type: "Jazz", length: "Short" },
+      { title: "Blue Monk (Easy)", difficulty: "Beginner", type: "Jazz", length: "Medium" },
+      { title: "Take the A Train (Easy)", difficulty: "Beginner", type: "Jazz", length: "Long" },
+      { title: "Mii Channel Theme", difficulty: "Beginner", type: "Video Game", length: "Short" },
+      { title: "Minecraft Theme (Calm 1)", difficulty: "Beginner", type: "Video Game", length: "Medium" },
+      { title: "Zelda Theme (Easy)", difficulty: "Beginner", type: "Video Game", length: "Long" },
+      { title: "City of Stars - La La Land", difficulty: "Beginner", type: "Movie Soundtrack", length: "Short" },
+      { title: "My Heart Will Go On (Easy)", difficulty: "Beginner", type: "Movie Soundtrack", length: "Medium" },
+      { title: "Interstellar Main Theme (Easy)", difficulty: "Beginner", type: "Movie Soundtrack", length: "Long" },
+
+      // Intermediate
+      { title: "Für Elise - Beethoven", difficulty: "Intermediate", type: "Classical", length: "Short" },
+      { title: "Nocturne Op.9 No.2 - Chopin", difficulty: "Intermediate", type: "Classical", length: "Medium" },
+      { title: "Moonlight Sonata 1st Mov. - Beethoven", difficulty: "Intermediate", type: "Classical", length: "Long" },
+      { title: "River Flows in You - Yiruma", difficulty: "Intermediate", type: "Pop", length: "Short" },
+      { title: "A Thousand Miles - Vanessa Carlton", difficulty: "Intermediate", type: "Pop", length: "Medium" },
+      { title: "All of Me - John Legend", difficulty: "Intermediate", type: "Pop", length: "Long" },
+      { title: "Autumn Leaves - Jazz Standard", difficulty: "Intermediate", type: "Jazz", length: "Short" },
+      { title: "Fly Me to the Moon", difficulty: "Intermediate", type: "Jazz", length: "Medium" },
+      { title: "Misty - Erroll Garner", difficulty: "Intermediate", type: "Jazz", length: "Long" },
+      { title: "Undertale Theme", difficulty: "Intermediate", type: "Video Game", length: "Short" },
+      { title: "Hollow Knight - Dirtmouth", difficulty: "Intermediate", type: "Video Game", length: "Medium" },
+      { title: "Final Fantasy Main Theme", difficulty: "Intermediate", type: "Video Game", length: "Long" },
+      { title: "Hedwig’s Theme - Harry Potter", difficulty: "Intermediate", type: "Movie Soundtrack", length: "Short" },
+      { title: "The Avengers Theme", difficulty: "Intermediate", type: "Movie Soundtrack", length: "Medium" },
+      { title: "Gladiator - Now We Are Free", difficulty: "Intermediate", type: "Movie Soundtrack", length: "Long" },
+
+      // Advanced
+      { title: "Sonata in C - Mozart", difficulty: "Advanced", type: "Classical", length: "Short" },
+      { title: "Clair de Lune - Debussy", difficulty: "Advanced", type: "Classical", length: "Medium" },
+      { title: "La Campanella - Liszt", difficulty: "Advanced", type: "Classical", length: "Long" },
+      { title: "Bohemian Rhapsody (Full) - Queen", difficulty: "Advanced", type: "Pop", length: "Short" },
+      { title: "Love Song - Sara Bareilles", difficulty: "Advanced", type: "Pop", length: "Medium" },
+      { title: "Scenes from an Italian Restaurant - Billy Joel", difficulty: "Advanced", type: "Pop", length: "Long" },
+      { title: "Take Five - Dave Brubeck", difficulty: "Advanced", type: "Jazz", length: "Short" },
+      { title: "Spain - Chick Corea", difficulty: "Advanced", type: "Jazz", length: "Medium" },
+      { title: "Giant Steps - John Coltrane", difficulty: "Advanced", type: "Jazz", length: "Long" },
+      { title: "Megalovania - Undertale", difficulty: "Advanced", type: "Video Game", length: "Short" },
+      { title: "One-Winged Angel - FFVII", difficulty: "Advanced", type: "Video Game", length: "Medium" },
+      { title: "Chrono Trigger Medley", difficulty: "Advanced", type: "Video Game", length: "Long" },
+      { title: "Inception - Time", difficulty: "Advanced", type: "Movie Soundtrack", length: "Short" },
+      { title: "In the Hall of the Mountain King", difficulty: "Advanced", type: "Movie Soundtrack", length: "Medium" },
+      { title: "Pirates of the Caribbean Suite", difficulty: "Advanced", type: "Movie Soundtrack", length: "Long" }
+    ];
+
+    function recommendSong() {
+      const difficulty = document.getElementById("difficulty").value;
+      const type = document.getElementById("type").value;
+      const length = document.getElementById("length").value;
+
+      const filtered = songDatabase.filter(song =>
+        song.difficulty === difficulty &&
+        song.type === type &&
+        song.length === length
+      );
+
+      const recommendation = document.getElementById("recommendation");
+
+      if (filtered.length > 0) {
+        const randomSong = filtered[Math.floor(Math.random() * filtered.length)];
+        recommendation.textContent = `${randomSong.title} (${randomSong.difficulty}, ${randomSong.type}, ${randomSong.length})`;
+      } else {
+        recommendation.textContent = "😢 No matching songs found. Try a different combo!";
+      }
+    }
+  </script>
+</body>
+</html>
