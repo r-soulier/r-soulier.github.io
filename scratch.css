@@ -1,0 +1,78 @@
+.common{
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+
+
+}
+
+.Header{
+    background-color: black;
+    color: white;
+    height: 100px;
+    line-height: 100px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mainbody{
+   
+    background-image: url('/assets/img/Nice\ PIano\ pic.jpeg');
+    background-size: cover; /* Makes sure the image covers the entire page */
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-position: center center; /* Centers the image */
+    background-attachment: fixed; /* Keeps the image fixed as you scroll */
+    color: white; /* Optional, just to make text readable on the image */
+
+}
+
+.footer{
+    position: fixed;
+    background-color: black;
+    color: white;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+    line-height: 25px;
+
+}
+
+
+img{
+    display: block;
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+nav{
+    background-color: gray;
+    padding:10px;
+    overflow:hidden;
+}
+
+ul {
+font-style: italic;
+
+}
+nav a{
+    color: black;
+    text-decoration: none;
+    padding: 20px;
+    font-weight: bold;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+
+}
+
+nav a:hover{
+    background-color: #ccc;
+
+
+}
+
+ol, ul {
+    width: fit-content;        /* Makes the list only as wide as it needs to be */
+    margin: 0 auto;            /* Horizontally centers the block */
+    text-align: left;          /* Ensures text and bullets are left-aligned */
+}
